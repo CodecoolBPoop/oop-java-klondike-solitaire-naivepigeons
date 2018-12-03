@@ -13,9 +13,7 @@ import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.Pane;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class Game extends Pane {
 
@@ -32,6 +30,10 @@ public class Game extends Pane {
     private static double STOCK_GAP = 1;
     private static double FOUNDATION_GAP = 0;
     private static double TABLEAU_GAP = 30;
+
+    private void shuffleDeck(){
+        Collections.shuffle(deck);
+    }
 
 
     private EventHandler<MouseEvent> onMouseClickedHandler = e -> {
@@ -94,6 +96,7 @@ public class Game extends Pane {
 
     public Game() {
         deck = Card.createNewDeck();
+        shuffleDeck();
         initPiles();
         dealCards();
     }
