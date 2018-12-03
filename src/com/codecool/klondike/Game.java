@@ -96,6 +96,7 @@ public class Game extends Pane {
         deck = Card.createNewDeck();
         initPiles();
         dealCards();
+        flipTopTableauCards();
     }
 
     public void addMouseEventHandlers(Card card) {
@@ -182,13 +183,37 @@ public class Game extends Pane {
 
     public void dealCards() {
         Iterator<Card> deckIterator = deck.iterator();
-        //TODO
+        int cardsToAdd = 1;
+        for (Pile pile : tableauPiles) {
+            for (int i = 0; i < cardsToAdd; i++) {
+                Card card = deckIterator.next();
+                pile.addCard(card);
+                card.setContainingPile(pile);
+                addMouseEventHandlers(card);
+                getChildren().add(card);
+            }
+            cardsToAdd++;
+        }
         deckIterator.forEachRemaining(card -> {
             stockPile.addCard(card);
+            card.setContainingPile(stockPile);
             addMouseEventHandlers(card);
             getChildren().add(card);
         });
 
+    }
+
+    public void flipTopCard(Pile pile) {
+        Card topCard = pile.getTopCard();
+        topCard.flip();
+    }
+
+    public void flipTopTableauCards() {
+        for (Pile pile : tableauPiles) {
+            if (!pile.isEmpty()) {
+                flipTopCard(pile);
+            }
+        }
     }
 
     public void setTableBackground(Image tableBackground) {
