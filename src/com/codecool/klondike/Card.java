@@ -78,7 +78,7 @@ public class Card extends ImageView {
     }
 
     public static boolean isOppositeColor(Card card1, Card card2) {
-        //TODO
+        //TODO: check if 2 cards are either blacks or reds. (User Story1)
         return true;
     }
 
@@ -87,6 +87,7 @@ public class Card extends ImageView {
     }
 
     public static List<Card> createNewDeck() {
+        // TODO: we have to change here the suits and rank numbers for enums (UserStory2)
         List<Card> result = new ArrayList<>();
         for (int suit = 1; suit < 5; suit++) {
             for (int rank = 1; rank < 14; rank++) {

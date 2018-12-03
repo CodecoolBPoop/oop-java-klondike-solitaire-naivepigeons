@@ -40,7 +40,7 @@ public class Pile extends Pane {
     }
 
     public int numOfCards() {
-        //TODO
+        //TODO: count the cards (UserStory1)
         return 1;
     }
 
