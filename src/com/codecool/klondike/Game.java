@@ -77,7 +77,10 @@ public class Game extends Pane {
         if (draggedCards.isEmpty())
             return;
         Card card = (Card) e.getSource();
-        Pile pile = getValidIntersectingPile(card, tableauPiles);
+        List<Pile> validDropPiles = FXCollections.observableArrayList();
+        validDropPiles.addAll(tableauPiles);
+        validDropPiles.addAll(foundationPiles);
+        Pile pile = getValidIntersectingPile(card, validDropPiles);
         //TODO
         if (pile != null) {
             handleValidMove(card, pile);
