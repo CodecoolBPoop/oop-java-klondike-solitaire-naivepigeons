@@ -156,6 +156,4 @@ public class Card extends ImageView {
         CLUBS
     }
 
-
-
 }
