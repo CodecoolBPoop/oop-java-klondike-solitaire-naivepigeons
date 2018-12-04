@@ -38,7 +38,7 @@ public class Game extends Pane {
 
     private EventHandler<MouseEvent> onMouseClickedHandler = e -> {
         Card card = (Card) e.getSource();
-        if (card.getContainingPile().getPileType() == Pile.PileType.STOCK) {
+        if (card.getContainingPile().getPileType() == Pile.PileType.STOCK && card.equals(stockPile.getTopCard())) {
             card.moveToPile(discardPile);
             card.flip();
             card.setMouseTransparent(false);
@@ -60,6 +60,9 @@ public class Game extends Pane {
         Pile activePile = card.getContainingPile();
         if (activePile.getPileType() == Pile.PileType.STOCK)
             return;
+        if (activePile.getPileType() == Pile.PileType.DISCARD && !card.equals(card.getContainingPile().getTopCard())) {
+            return;
+        }
         double offsetX = e.getSceneX() - dragStartX;
         double offsetY = e.getSceneY() - dragStartY;
 
@@ -113,7 +116,9 @@ public class Game extends Pane {
     }
 
     public void refillStockFromDiscard() {
-        //TODO
+        for (int i = discardPile.numOfCards() - 1; i >= 0 ; i--) {
+            discardPile.getCards().get(i).moveToPile(stockPile);
+        }
         System.out.println("Stock refilled from discard pile.");
     }
 
@@ -215,8 +220,10 @@ public class Game extends Pane {
     }
 
     public void flipTopCard(Pile pile) {
-        Card topCard = pile.getTopCard();
-        topCard.flip();
+        if (!pile.isEmpty()) {
+            Card topCard = pile.getTopCard();
+            topCard.flip();
+        }
     }
 
     public void flipTopTableauCards() {
