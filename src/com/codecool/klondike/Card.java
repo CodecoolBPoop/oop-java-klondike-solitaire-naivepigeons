@@ -1,6 +1,5 @@
 package com.codecool.klondike;
 
-import com.sun.scenario.effect.impl.prism.PrImage;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -10,9 +9,8 @@ import java.util.*;
 
 public class Card extends ImageView {
 
-    private Suits suit;
-    private Ranks rank;
-
+    private int suit;
+    private int rank;
     private boolean faceDown;
 
     private Image backFace;
@@ -25,8 +23,7 @@ public class Card extends ImageView {
     public static final int WIDTH = 150;
     public static final int HEIGHT = 215;
 
-
-    public Card(Suits suit, Ranks rank, boolean faceDown) {
+    public Card(int suit, int rank, boolean faceDown) {
         this.suit = suit;
         this.rank = rank;
         this.faceDown = faceDown;
@@ -38,15 +35,11 @@ public class Card extends ImageView {
     }
 
     public int getSuit() {
-        return suit.ordinal();
-    }
-
-    public Suits getSuitName() {
         return suit;
     }
 
     public int getRank() {
-        return rank.ordinal();
+        return rank;
     }
 
     public boolean isFaceDown() {
@@ -54,8 +47,6 @@ public class Card extends ImageView {
     }
 
     public String getShortName() {
-        int suit = this.suit.ordinal() + 1;
-        int rank = this.rank.ordinal() + 1;
         return "S" + suit + "R" + rank;
     }
 
@@ -83,24 +74,12 @@ public class Card extends ImageView {
 
     @Override
     public String toString() {
-        return "The " + suit.toString().toLowerCase() + " " + rank.toString().toLowerCase();
+        return "The " + "Rank" + rank + " of " + "Suit" + suit;
     }
 
     public static boolean isOppositeColor(Card card1, Card card2) {
-        boolean isOpposite = (card1.isRed() && card2.isBlack() ||
-                              card2.isRed() && card1.isBlack());
-
-        return isOpposite;
-    }
-
-    private boolean isRed() {
-        boolean isRed = this.getSuitName() == Suits.HEARTS || this.getSuitName() == Suits.DIAMONDS;
-        return isRed;
-    }
-
-    private boolean isBlack() {
-        boolean isBlack = this.getSuitName() == Suits.SPADES || this.getSuitName() == Suits.CLUBS;
-        return isBlack;
+        //TODO
+        return true;
     }
 
     public static boolean isSameSuit(Card card1, Card card2) {
@@ -109,8 +88,8 @@ public class Card extends ImageView {
 
     public static List<Card> createNewDeck() {
         List<Card> result = new ArrayList<>();
-        for (Suits suit: Suits.values()) {
-            for (Ranks rank: Ranks.values()) {
+        for (int suit = 1; suit < 5; suit++) {
+            for (int rank = 1; rank < 14; rank++) {
                 result.add(new Card(suit, rank, true));
             }
         }
@@ -119,41 +98,29 @@ public class Card extends ImageView {
 
     public static void loadCardImages() {
         cardBackImage = new Image("card_images/card_back.png");
-        String suitName;
-        for (Suits suit: Suits.values()) {
-            suitName = suit.toString().toLowerCase();
-            int suitNr = suit.ordinal() + 1;
-            for (Ranks rank: Ranks.values()) {
-                int rankName = rank.ordinal() + 1;
-                String cardName = suitName + rankName;
-                String cardId = "S" + suitNr + "R" + rankName;
+        String suitName = "";
+        for (int suit = 1; suit < 5; suit++) {
+            switch (suit) {
+                case 1:
+                    suitName = "hearts";
+                    break;
+                case 2:
+                    suitName = "diamonds";
+                    break;
+                case 3:
+                    suitName = "spades";
+                    break;
+                case 4:
+                    suitName = "clubs";
+                    break;
+            }
+            for (int rank = 1; rank < 14; rank++) {
+                String cardName = suitName + rank;
+                String cardId = "S" + suit + "R" + rank;
                 String imageFileName = "card_images/" + cardName + ".png";
                 cardFaceImages.put(cardId, new Image(imageFileName));
             }
         }
-    }
-
-    public enum Ranks {
-        ACE,
-        TWO,
-        THREE,
-        FOUR,
-        FIVE,
-        SIX,
-        SEVEN,
-        EIGHT,
-        NINE,
-        TEN,
-        JACK,
-        QUEEN,
-        KING
-    }
-
-    public enum Suits {
-        HEARTS,
-        DIAMONDS,
-        SPADES,
-        CLUBS
     }
 
 }
