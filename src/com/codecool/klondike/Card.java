@@ -114,10 +114,6 @@ public class Card extends ImageView {
                 result.add(new Card(suit, rank, true));
             }
         }
-        for (Card card: result) {
-            System.out.printf("%s%n", card);
-            System.out.printf("%s%n", card.getShortName());
-        }
         return result;
     }
 
@@ -133,7 +129,6 @@ public class Card extends ImageView {
                 String cardId = "S" + suitNr + "R" + rankName;
                 String imageFileName = "card_images/" + cardName + ".png";
                 cardFaceImages.put(cardId, new Image(imageFileName));
-                System.out.printf("%s - %s - %s%n", cardId, cardName, imageFileName);
             }
         }
     }
