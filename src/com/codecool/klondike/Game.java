@@ -127,9 +127,21 @@ public class Game extends Pane {
             //TODO: FOUNDATION CONSTRAINTS
         }
         else if (destPile.getPileType().equals(Pile.PileType.TABLEAU)) {
-            //TODO: TABLEAU CONSTRAINTS
+            Card topCard = destPile.getTopCard();
+            
+            // if there's no top card and only KING
+            if (topCard == null && card.getRank() == 13){
+                return true;
+            }
+            else if (topCard == null) {
+                return false;
+            }
+            // if diff color AND rank is +1
+            else if (Card.isOppositeColor(card, topCard) && topCard.getRank() == (card.getRank() + 1) ){
+                return true;
+            }
         }
-        return true;
+        return false;
     }
     private Pile getValidIntersectingPile(Card card, List<Pile> piles) {
         Pile result = null;
