@@ -123,7 +123,12 @@ public class Game extends Pane {
     }
 
     public boolean isMoveValid(Card card, Pile destPile) {
-        //TODO
+        if (destPile.getPileType().equals(Pile.PileType.FOUNDATION)){
+            //TODO: FOUNDATION CONSTRAINTS
+        }
+        else if (destPile.getPileType().equals(Pile.PileType.TABLEAU)) {
+            //TODO: TABLEAU CONSTRAINTS
+        }
         return true;
     }
     private Pile getValidIntersectingPile(Card card, List<Pile> piles) {
