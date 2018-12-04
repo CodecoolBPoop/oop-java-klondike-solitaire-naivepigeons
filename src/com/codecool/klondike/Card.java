@@ -41,6 +41,10 @@ public class Card extends ImageView {
         return suit.ordinal();
     }
 
+    public Suits getSuitName() {
+        return suit;
+    }
+
     public int getRank() {
         return rank.ordinal();
     }
@@ -50,8 +54,8 @@ public class Card extends ImageView {
     }
 
     public String getShortName() {
-        int suit = this.suit.ordinal();
-        int rank = this.rank.ordinal();
+        int suit = this.suit.ordinal() + 1;
+        int rank = this.rank.ordinal() + 1;
         return "S" + suit + "R" + rank;
     }
 
@@ -90,14 +94,12 @@ public class Card extends ImageView {
     }
 
     private boolean isRed() {
-        boolean isRed = (this.suit == 1 || this.suit == 2);
-
+        boolean isRed = this.getSuitName() == Suits.HEARTS || this.getSuitName() == Suits.DIAMONDS;
         return isRed;
     }
 
     private boolean isBlack() {
-        boolean isBlack = (this.suit == 3 || this.suit == 4);
-
+        boolean isBlack = this.getSuitName() == Suits.SPADES || this.getSuitName() == Suits.CLUBS;
         return isBlack;
     }
 
@@ -111,6 +113,10 @@ public class Card extends ImageView {
             for (Ranks rank: Ranks.values()) {
                 result.add(new Card(suit, rank, true));
             }
+        }
+        for (Card card: result) {
+            System.out.printf("%s%n", card);
+            System.out.printf("%s%n", card.getShortName());
         }
         return result;
     }
@@ -127,6 +133,7 @@ public class Card extends ImageView {
                 String cardId = "S" + suitNr + "R" + rankName;
                 String imageFileName = "card_images/" + cardName + ".png";
                 cardFaceImages.put(cardId, new Image(imageFileName));
+                System.out.printf("%s - %s - %s%n", cardId, cardName, imageFileName);
             }
         }
     }
