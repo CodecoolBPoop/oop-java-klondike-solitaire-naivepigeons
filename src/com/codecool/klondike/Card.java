@@ -78,15 +78,23 @@ public class Card extends ImageView {
     }
 
     public static boolean isOppositeColor(Card card1, Card card2) {
-        boolean isOpposite;
 
-        isOpposite = (((card1.rank == 1 || card1.rank == 2) &&
-                       (card2.rank == 3 || card2.rank == 4))
-                                        ||
-                      ((card1.rank == 3 || card1.rank == 4) &&
-                       (card2.rank == 1 || card2.rank == 2)));
+        boolean isOpposite = (card1.isRed() && card2.isBlack() ||
+                              card2.isRed() && card1.isBlack());
 
         return isOpposite;
+    }
+
+    private boolean isRed() {
+        boolean isRed = (this.suit == 1 || this.suit == 2);
+
+        return isRed;
+    }
+
+    private boolean isBlack() {
+        boolean isBlack = (this.suit == 3 || this.suit == 4);
+
+        return isBlack;
     }
 
     public static boolean isSameSuit(Card card1, Card card2) {
