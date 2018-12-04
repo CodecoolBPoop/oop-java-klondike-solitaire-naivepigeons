@@ -38,7 +38,7 @@ public class Game extends Pane {
 
     private EventHandler<MouseEvent> onMouseClickedHandler = e -> {
         Card card = (Card) e.getSource();
-        if (card.getContainingPile().getPileType() == Pile.PileType.STOCK) {
+        if (card.getContainingPile().getPileType() == Pile.PileType.STOCK && card.equals(stockPile.getTopCard())) {
             card.moveToPile(discardPile);
             card.flip();
             card.setMouseTransparent(false);
@@ -210,8 +210,10 @@ public class Game extends Pane {
     }
 
     public void flipTopCard(Pile pile) {
-        Card topCard = pile.getTopCard();
-        topCard.flip();
+        if (!pile.isEmpty()) {
+            Card topCard = pile.getTopCard();
+            topCard.flip();
+        }
     }
 
     public void flipTopTableauCards() {
