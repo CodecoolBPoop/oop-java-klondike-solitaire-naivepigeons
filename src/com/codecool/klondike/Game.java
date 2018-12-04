@@ -31,7 +31,7 @@ public class Game extends Pane {
     private static double FOUNDATION_GAP = 0;
     private static double TABLEAU_GAP = 30;
 
-    private void shuffleDeck(){
+    private void shuffleDeck() {
         Collections.shuffle(deck);
     }
 
@@ -118,14 +118,26 @@ public class Game extends Pane {
     }
 
     public boolean isMoveValid(Card card, Pile destPile) {
-        if (destPile.getPileType().equals(Pile.PileType.FOUNDATION)){
+        if (destPile.getPileType().equals(Pile.PileType.FOUNDATION)) {
             //TODO: FOUNDATION CONSTRAINTS
-        }
-        else if (destPile.getPileType().equals(Pile.PileType.TABLEAU)) {
+            Card topCard = destPile.getTopCard();
+
+            if (topCard == null && card.getRank() == 1){
+                return true;
+            }
+            else if (topCard == null){
+                return false;
+            }
+            else if (topCard.getSuit() == card.getSuit() && topCard.getRank() + 1 == card.getRank()){
+                return true;
+            }
+        } else if (destPile.getPileType().equals(Pile.PileType.TABLEAU)) {
             //TODO: TABLEAU CONSTRAINTS
+            return true;
         }
-        return true;
+        return false;
     }
+
     private Pile getValidIntersectingPile(Card card, List<Pile> piles) {
         Pile result = null;
         for (Pile pile : piles) {
