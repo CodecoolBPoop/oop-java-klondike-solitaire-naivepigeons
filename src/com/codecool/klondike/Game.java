@@ -38,7 +38,7 @@ public class Game extends Pane {
 
     private EventHandler<MouseEvent> onMouseClickedHandler = e -> {
         Card card = (Card) e.getSource();
-        if (card.getContainingPile().getPileType() == Pile.PileType.STOCK) {
+        if (card.getContainingPile().getPileType() == Pile.PileType.STOCK && card.equals(stockPile.getTopCard())) {
             card.moveToPile(discardPile);
             card.flip();
             card.setMouseTransparent(false);
@@ -60,6 +60,9 @@ public class Game extends Pane {
         Pile activePile = card.getContainingPile();
         if (activePile.getPileType() == Pile.PileType.STOCK)
             return;
+        if (activePile.getPileType() == Pile.PileType.DISCARD && !card.equals(card.getContainingPile().getTopCard())) {
+            return;
+        }
         double offsetX = e.getSceneX() - dragStartX;
         double offsetY = e.getSceneY() - dragStartY;
 
@@ -113,13 +116,14 @@ public class Game extends Pane {
     }
 
     public void refillStockFromDiscard() {
-        //TODO
+        for (int i = discardPile.numOfCards() - 1; i >= 0 ; i--) {
+            discardPile.getCards().get(i).moveToPile(stockPile);
+        }
         System.out.println("Stock refilled from discard pile.");
     }
 
     public boolean isMoveValid(Card card, Pile destPile) {
         if (destPile.getPileType().equals(Pile.PileType.FOUNDATION)) {
-            //TODO: FOUNDATION CONSTRAINTS
             Card topCard = destPile.getTopCard();
 
             if (topCard == null && card.getRank() == 1){
@@ -131,13 +135,24 @@ public class Game extends Pane {
             else if (topCard.getSuit() == card.getSuit() && topCard.getRank() + 1 == card.getRank()){
                 return true;
             }
-        } else if (destPile.getPileType().equals(Pile.PileType.TABLEAU)) {
-            //TODO: TABLEAU CONSTRAINTS
-            return true;
+        }
+        else if (destPile.getPileType().equals(Pile.PileType.TABLEAU)) {
+            Card topCard = destPile.getTopCard();
+
+            // if there's no top card and only KING
+            if (topCard == null && card.getRank() == 13){
+                return true;
+            }
+            else if (topCard == null) {
+                return false;
+            }
+            // if diff color AND rank is +1
+            else if (Card.isOppositeColor(card, topCard) && topCard.getRank() == (card.getRank() + 1) ){
+                return true;
+            }
         }
         return false;
     }
-
     private Pile getValidIntersectingPile(Card card, List<Pile> piles) {
         Pile result = null;
         for (Pile pile : piles) {
@@ -227,8 +242,10 @@ public class Game extends Pane {
     }
 
     public void flipTopCard(Pile pile) {
-        Card topCard = pile.getTopCard();
-        topCard.flip();
+        if (!pile.isEmpty()) {
+            Card topCard = pile.getTopCard();
+            topCard.flip();
+        }
     }
 
     public void flipTopTableauCards() {

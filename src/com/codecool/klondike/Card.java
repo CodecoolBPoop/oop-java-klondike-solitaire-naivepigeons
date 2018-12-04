@@ -38,15 +38,20 @@ public class Card extends ImageView {
     }
 
     public int getSuit() {
-        return suit.ordinal();
+        return suit.ordinal() + 1;
     }
 
-    public Suits getSuitName() {
-        return suit;
+    public String getSuitName() {
+        String suitName = suit.toString().toLowerCase();
+        return suitName;
     }
 
     public int getRank() {
-        return rank.ordinal();
+        return rank.ordinal() + 1;
+    }
+
+    public String getRankName() {
+        return rank.toString().toLowerCase();
     }
 
     public boolean isFaceDown() {
@@ -94,12 +99,12 @@ public class Card extends ImageView {
     }
 
     private boolean isRed() {
-        boolean isRed = this.getSuitName() == Suits.HEARTS || this.getSuitName() == Suits.DIAMONDS;
+        boolean isRed = this.getSuitName().equals("hearts") || this.getSuitName().equals("diamonds");
         return isRed;
     }
 
     private boolean isBlack() {
-        boolean isBlack = this.getSuitName() == Suits.SPADES || this.getSuitName() == Suits.CLUBS;
+        boolean isBlack = this.getSuitName().equals("spades") || this.getSuitName().equals("clubs");
         return isBlack;
     }
 
