@@ -191,16 +191,13 @@ public class Game extends Pane {
     private void autoFlipTableauTops (Card card) {
         Pile containingPile = card.getContainingPile();
         Pile.PileType containingType = containingPile.getPileType();
-        System.out.printf("Containing pile is %s%n", containingType);
         if (containingType == Pile.PileType.TABLEAU) {
-            ObservableList<Card> cardsInThisPile = containingPile.getCards();
-            System.out.printf("In this pile we have %s%n", cardsInThisPile.toString());
             Card top = containingPile.getTopCardAfterMove();
-            System.out.printf("On top is %s%n", top);
-            top.flip();
-
-
-
+            try {
+                top.flip();
+            } catch (NullPointerException e) {
+                ;
+            }
         }
     }
 

@@ -77,7 +77,11 @@ public class Pile extends Pane {
         if (cards.isEmpty())
             return null;
         else
-            return cards.get(cards.size() - 2);
+            try {
+                return cards.get(cards.size() - 2);
+            } catch (ArrayIndexOutOfBoundsException e) {
+                return null;
+            }
     }
 
     public void setBlurredBackground() {
