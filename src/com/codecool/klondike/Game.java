@@ -2,6 +2,7 @@ package com.codecool.klondike;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
@@ -201,8 +202,23 @@ public class Game extends Pane {
             msg = String.format("Placed %s to %s.", card, destPile.getTopCard());
         }
         System.out.println(msg);
+        autoFlipTableauTops(card);
         MouseUtil.slideToDest(draggedCards, destPile);
         draggedCards.clear();
+    }
+
+    private void autoFlipTableauTops (Card card) {
+        Pile containingPile = card.getContainingPile();
+        Pile.PileType containingType = containingPile.getPileType();
+        if (containingType == Pile.PileType.TABLEAU) {
+            int cardsToDig = draggedCards.size() + 1;
+            Card theNewTop = containingPile.getTopXCard(cardsToDig);
+            try {
+                theNewTop.flip();
+            } catch (NullPointerException e) {
+                ;
+            }
+        }
     }
 
 
@@ -266,6 +282,7 @@ public class Game extends Pane {
             topCard.flip();
         }
     }
+
 
     public void flipTopTableauCards() {
         for (Pile pile : tableauPiles) {
