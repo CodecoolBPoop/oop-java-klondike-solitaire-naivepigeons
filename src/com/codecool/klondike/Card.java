@@ -1,6 +1,5 @@
 package com.codecool.klondike;
 
-import com.sun.scenario.effect.impl.prism.PrImage;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -122,8 +121,8 @@ public class Card extends ImageView {
         return result;
     }
 
-    public static void loadCardImages() {
-        cardBackImage = new Image("card_images/card_back.png");
+    public static void loadCardImages(int theme) {
+        cardBackImage = getCardBackImage(theme);
         String suitName;
         for (Suits suit: Suits.values()) {
             suitName = suit.toString().toLowerCase();
@@ -159,6 +158,11 @@ public class Card extends ImageView {
         DIAMONDS,
         SPADES,
         CLUBS
+    }
+
+    public static Image getCardBackImage(int theme) {
+        cardBackImage = new Image("card_images/card_back" + theme + ".png");
+        return cardBackImage;
     }
 
 }

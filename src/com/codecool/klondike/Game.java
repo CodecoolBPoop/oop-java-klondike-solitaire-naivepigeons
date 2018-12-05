@@ -1,10 +1,7 @@
 package com.codecool.klondike;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
-import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
@@ -112,6 +109,7 @@ public class Game extends Pane {
             draggedCards.forEach(MouseUtil::slideBack);
             draggedCards.clear();
         }
+
     };
 
     public boolean isGameWon() {
@@ -211,8 +209,8 @@ public class Game extends Pane {
         Pile containingPile = card.getContainingPile();
         Pile.PileType containingType = containingPile.getPileType();
         if (containingType == Pile.PileType.TABLEAU) {
-            int cardsToDig = draggedCards.size() + 1;
-            Card theNewTop = containingPile.getTopXCard(cardsToDig);
+            int indexToFlip = draggedCards.size() + 1;
+            Card theNewTop = containingPile.getTopXCard(indexToFlip);
             try {
                 theNewTop.flip();
             } catch (NullPointerException e) {
@@ -297,5 +295,6 @@ public class Game extends Pane {
                 BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT,
                 BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
     }
+
 
 }
