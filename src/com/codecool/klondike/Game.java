@@ -70,6 +70,9 @@ public class Game extends Pane {
         if (pileType == Pile.PileType.TABLEAU && card.isFaceDown()) {
             return;
         }
+        if (activePile.getPileType() == Pile.PileType.FOUNDATION && !card.equals(card.getContainingPile().getTopCard())){
+            return;
+        }
         double offsetX = e.getSceneX() - dragStartX;
         double offsetY = e.getSceneY() - dragStartY;
 
@@ -139,7 +142,7 @@ public class Game extends Pane {
     }
 
     public boolean isMoveValid(Card card, Pile destPile) {
-        if (destPile.getPileType().equals(Pile.PileType.FOUNDATION)) {
+        if (destPile.getPileType().equals(Pile.PileType.FOUNDATION) && draggedCards.size() == 1) {
             Card topCard = destPile.getTopCard();
 
             if (topCard == null && card.getRank() == 1){
