@@ -126,7 +126,7 @@ public class Game extends Pane {
     }
 
     public boolean isMoveValid(Card card, Pile destPile) {
-        if (destPile.getPileType().equals(Pile.PileType.FOUNDATION)) {
+        if (destPile.getPileType().equals(Pile.PileType.FOUNDATION) && draggedCards.size() == 1) {
             Card topCard = destPile.getTopCard();
 
             if (topCard == null && card.getRank() == 1){
