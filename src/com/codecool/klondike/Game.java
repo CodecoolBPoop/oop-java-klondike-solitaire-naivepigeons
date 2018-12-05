@@ -63,6 +63,9 @@ public class Game extends Pane {
         if (activePile.getPileType() == Pile.PileType.DISCARD && !card.equals(card.getContainingPile().getTopCard())) {
             return;
         }
+        if (activePile.getPileType() == Pile.PileType.FOUNDATION && !card.equals(card.getContainingPile().getTopCard())){
+            return;
+        }
         double offsetX = e.getSceneX() - dragStartX;
         double offsetY = e.getSceneY() - dragStartY;
 
