@@ -211,9 +211,10 @@ public class Game extends Pane {
         Pile containingPile = card.getContainingPile();
         Pile.PileType containingType = containingPile.getPileType();
         if (containingType == Pile.PileType.TABLEAU) {
-            Card top = containingPile.getTopCardAfterMove();
+            int cardsToDig = draggedCards.size() + 1;
+            Card theNewTop = containingPile.getTopXCard(cardsToDig);
             try {
-                top.flip();
+                theNewTop.flip();
             } catch (NullPointerException e) {
                 ;
             }
