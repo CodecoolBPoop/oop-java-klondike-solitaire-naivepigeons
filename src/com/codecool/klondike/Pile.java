@@ -84,6 +84,18 @@ public class Pile extends Pane {
             }
     }
 
+    public int getTopCardIndex() {
+        return numOfCards() - 1;
+    }
+
+    public Card getCard(int index) {
+        return cards.get(index);
+    }
+
+    public int getCardIndex(Card card) {
+        return cards.indexOf(card);
+    }
+
     public void setBlurredBackground() {
         setPrefSize(Card.WIDTH, Card.HEIGHT);
         BackgroundFill backgroundFill = new BackgroundFill(Color.gray(0.0, 0.2), null, null);
