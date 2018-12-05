@@ -58,12 +58,13 @@ public class Game extends Pane {
     private EventHandler<MouseEvent> onMouseDraggedHandler = e -> {
         Card card = (Card) e.getSource();
         Pile activePile = card.getContainingPile();
-        if (activePile.getPileType() == Pile.PileType.STOCK)
+        Pile.PileType pileType = activePile.getPileType();
+        if (pileType == Pile.PileType.STOCK)
             return;
-        if (activePile.getPileType() == Pile.PileType.DISCARD && !card.equals(card.getContainingPile().getTopCard())) {
+        if (pileType == Pile.PileType.DISCARD && !card.equals(card.getContainingPile().getTopCard())) {
             return;
         }
-        if (activePile.getPileType() == Pile.PileType.TABLEAU && card.isFaceDown()) {
+        if (pileType == Pile.PileType.TABLEAU && card.isFaceDown()) {
             return;
         }
         double offsetX = e.getSceneX() - dragStartX;
@@ -71,6 +72,9 @@ public class Game extends Pane {
 
         draggedCards.clear();
         draggedCards.add(card);
+        if (pileType == Pile.PileType.TABLEAU && !card.equals(activePile.getTopCard())) {
+
+        }
 
         card.getDropShadow().setRadius(20);
         card.getDropShadow().setOffsetX(10);
@@ -120,6 +124,7 @@ public class Game extends Pane {
 
     public void refillStockFromDiscard() {
         for (int i = discardPile.numOfCards() - 1; i >= 0 ; i--) {
+            discardPile.getCards().get(i).flip();
             discardPile.getCards().get(i).moveToPile(stockPile);
         }
         System.out.println("Stock refilled from discard pile.");
