@@ -30,20 +30,20 @@ public class Klondike extends Application {
         game.setTableBackground(new Image("/table/" + themeNr + ".png"));
         game.makeThemeSwitcher();
         stage = primaryStage;
-        newButtons(game, stage);
+        newButtons(game);
         stage.setTitle("Klondike Solitaire");
         stage.setScene(new Scene(game, WINDOW_WIDTH, WINDOW_HEIGHT));
         stage.show();
     }
 
-    private void newButtons(Game game, Stage stage) {
+    private void newButtons(Game game) {
         Image restartImage = new Image("button_images/restart.png");
+        Image undoImage = new Image("button_images/undo.png");
 
         Button restartButton = new Button("");
         restartButton.setGraphic(new ImageView(restartImage));
-
-        restartButton.setLayoutX(10);
-        restartButton.setLayoutY(10);
+        restartButton.setLayoutX(1375);
+        restartButton.setLayoutY(50);
 
         restartButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -52,7 +52,21 @@ public class Klondike extends Application {
             }
         });
 
+        Button undoButton = new Button("");
+        undoButton.setGraphic(new ImageView(undoImage));
+        undoButton.setLayoutX(490);
+        undoButton.setLayoutY(50);
+
+        undoButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                game.undoLastMove();
+            }
+        });
+
         game.getChildren().add(restartButton);
+        game.getChildren().add(undoButton);
+
     }
 
     public void restart() {

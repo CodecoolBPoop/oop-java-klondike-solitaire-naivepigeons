@@ -17,6 +17,8 @@ public class Card extends ImageView {
     private Image backFace;
     private Image frontFace;
     private Pile containingPile;
+    private Pile lastPile;
+    public boolean isLast = false;
     private DropShadow dropShadow;
 
     static Image cardBackImage;
@@ -67,6 +69,10 @@ public class Card extends ImageView {
         return dropShadow;
     }
 
+    public Pile getLastPile(){
+        return lastPile;
+    }
+
     public Pile getContainingPile() {
         return containingPile;
     }
@@ -76,6 +82,8 @@ public class Card extends ImageView {
     }
 
     public void moveToPile(Pile destPile) {
+        this.lastPile = getContainingPile();
+        this.isLast = true;
         this.getContainingPile().getCards().remove(this);
         destPile.addCard(this);
     }
