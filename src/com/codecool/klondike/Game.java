@@ -123,7 +123,6 @@ public class Game extends Pane {
         validDropPiles.addAll(tableauPiles);
         validDropPiles.addAll(foundationPiles);
         Pile pile = getValidIntersectingPile(card, validDropPiles);
-        //TODO
         if (pile != null) {
             handleValidMove(card, pile);
         } else {
@@ -149,8 +148,8 @@ public class Game extends Pane {
         return false;
     }
 
-    public void checkAndHandleGameWon(){
-        if (isGameWon()){
+    public void checkAndHandleGameWon() {
+        if (isGameWon()) {
             Popup popup = new Popup();
             popup.display();
         }
@@ -241,35 +240,10 @@ public class Game extends Pane {
         draggedCards.clear();
     }
 
-    private void autoFlipTableauTops(Card card) {
-        Pile containingPile = card.getContainingPile();
-        Pile.PileType containingType = containingPile.getPileType();
-        if (containingType == Pile.PileType.TABLEAU) {
-            // If we are moving only one card, lets check if there is any above it already flipped and if yes, lets not flip anything
-            if (draggedCards.size() == 1) {
-                ObservableList<Card> cards = containingPile.getCards();
-                for (int i=cards.size(); i>0; i--) {
-                    try {
-                        if (!cards.get(cards.size()-2).isFaceDown()) {
-                            break;
-                        } else if (cards.get(i-1).isFaceDown()) {
-                            cards.get(i-1).flip();
-                            break;
-                        }
-                    } catch (ArrayIndexOutOfBoundsException e) {
-                        ;
-                    }
-                }
-                // If we move all the cards flipped, lets make sure that the first one above them gets flipped
-            } else {
-                int cardsToDig = draggedCards.size() + 1;
-                Card theNewTop = containingPile.getTopXCard(cardsToDig);
-                try {
-                    theNewTop.flip();
-                } catch (NullPointerException e) {
-                    ;
-                }
-            }
+    public void autoFlipTableauTops(Card card, Pile original) {
+        if (!original.isEmpty() &&
+                original.getPileType().equals(Pile.PileType.TABLEAU) && original.getTopCard().isFaceDown()) {
+            flipTopCard(original);
         }
     }
 

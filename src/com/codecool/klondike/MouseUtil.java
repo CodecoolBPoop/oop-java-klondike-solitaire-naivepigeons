@@ -61,11 +61,8 @@ public class MouseUtil {
                         currentCard.getDropShadow().setRadius(2);
                         currentCard.getDropShadow().setOffsetX(0);
                         currentCard.getDropShadow().setOffsetY(0);
-                        if (currentIndex == numOfCardsToSlide - 1 && !original.isEmpty() &&
-                                original.getPileType().equals(Pile.PileType.TABLEAU) && original.getTopCard().isFaceDown()) {
-                            game.flipTopCard(original);
-                        }
-                        if (currentIndex == numOfCardsToSlide-1){
+                        if (currentIndex == numOfCardsToSlide - 1) {
+                            game.autoFlipTableauTops(currentCard, original);
                             game.checkAndHandleGameWon();
                         }
                     });
