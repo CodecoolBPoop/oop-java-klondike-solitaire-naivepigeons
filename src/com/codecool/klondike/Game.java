@@ -14,6 +14,23 @@ import javafx.scene.layout.*;
 
 import java.util.*;
 
+import javafx.application.Application;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+
+import javafx.geometry.Pos;
+import javafx.scene.*;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import javafx.stage.*;
+
+
 public class Game extends Pane {
 
     private List<Card> deck = new ArrayList<>();
@@ -60,7 +77,7 @@ public class Game extends Pane {
         Pile activePile = card.getContainingPile();
         int cardIndex = activePile.getCardIndex(card);
         Pile.PileType pileType = activePile.getPileType();
-        
+
         if (pileType == Pile.PileType.STOCK) {
             return;
         }
@@ -70,7 +87,7 @@ public class Game extends Pane {
         if (pileType == Pile.PileType.TABLEAU && card.isFaceDown()) {
             return;
         }
-        if (activePile.getPileType() == Pile.PileType.FOUNDATION && !card.equals(card.getContainingPile().getTopCard())){
+        if (activePile.getPileType() == Pile.PileType.FOUNDATION && !card.equals(card.getContainingPile().getTopCard())) {
             return;
         }
         double offsetX = e.getSceneX() - dragStartX;
@@ -104,7 +121,6 @@ public class Game extends Pane {
         validDropPiles.addAll(tableauPiles);
         validDropPiles.addAll(foundationPiles);
         Pile pile = getValidIntersectingPile(card, validDropPiles);
-        //TODO
         if (pile != null) {
             handleValidMove(card, pile);
         } else {
@@ -114,9 +130,28 @@ public class Game extends Pane {
 
     };
 
+    private boolean areTableauPilesEmpty() {
+        for (Pile pile : tableauPiles) {
+            if (!pile.isEmpty()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public boolean isGameWon() {
-        //TODO
+        if (stockPile.isEmpty() && discardPile.isEmpty() && areTableauPilesEmpty()) {
+            System.out.println("Congratulations, you won!");
+            return true;
+        }
         return false;
+    }
+
+    public void checkAndHandleGameWon() {
+        if (isGameWon()) {
+            Popup popup = new Popup();
+            popup.display();
+        }
     }
 
     public Game() {
@@ -135,7 +170,7 @@ public class Game extends Pane {
     }
 
     public void refillStockFromDiscard() {
-        for (int i = discardPile.numOfCards() - 1; i >= 0 ; i--) {
+        for (int i = discardPile.numOfCards() - 1; i >= 0; i--) {
             discardPile.getCards().get(i).flip();
             discardPile.getCards().get(i).moveToPile(stockPile);
         }
@@ -146,33 +181,30 @@ public class Game extends Pane {
         if (destPile.getPileType().equals(Pile.PileType.FOUNDATION) && draggedCards.size() == 1) {
             Card topCard = destPile.getTopCard();
 
-            if (topCard == null && card.getRank() == 1){
+            if (topCard == null && card.getRank() == 1) {
                 return true;
-            }
-            else if (topCard == null){
+            } else if (topCard == null) {
                 return false;
-            }
-            else if (topCard.getSuit() == card.getSuit() && topCard.getRank() + 1 == card.getRank()){
+            } else if (topCard.getSuit() == card.getSuit() && topCard.getRank() + 1 == card.getRank()) {
                 return true;
             }
-        }
-        else if (destPile.getPileType().equals(Pile.PileType.TABLEAU)) {
+        } else if (destPile.getPileType().equals(Pile.PileType.TABLEAU)) {
             Card topCard = destPile.getTopCard();
 
             // if there's no top card and only KING
-            if (topCard == null && card.getRank() == 13){
+            if (topCard == null && card.getRank() == 13) {
                 return true;
-            }
-            else if (topCard == null) {
+            } else if (topCard == null) {
                 return false;
             }
             // if diff color AND rank is +1
-            else if (Card.isOppositeColor(card, topCard) && topCard.getRank() == (card.getRank() + 1) ){
+            else if (Card.isOppositeColor(card, topCard) && topCard.getRank() == (card.getRank() + 1)) {
                 return true;
             }
         }
         return false;
     }
+
     private Pile getValidIntersectingPile(Card card, List<Pile> piles) {
         Pile result = null;
         for (Pile pile : piles) {
@@ -202,22 +234,17 @@ public class Game extends Pane {
             msg = String.format("Placed %s to %s.", card, destPile.getTopCard());
         }
         System.out.println(msg);
-        autoFlipTableauTops(card);
-        MouseUtil.slideToDest(draggedCards, destPile);
+        //autoFlipTableauTops(card);
+        MouseUtil.slideToDest(draggedCards, destPile, this);
         draggedCards.clear();
     }
 
-    private void autoFlipTableauTops (Card card) {
-        Pile containingPile = card.getContainingPile();
-        Pile.PileType containingType = containingPile.getPileType();
-        if (containingType == Pile.PileType.TABLEAU) {
-            int indexToFlip = draggedCards.size() + 1;
-            Card theNewTop = containingPile.getTopXCard(indexToFlip);
-            try {
-                theNewTop.flip();
-            } catch (NullPointerException e) {
-                ;
-            }
+
+
+    public void autoFlipTableauTops(Card card, Pile original) {
+        if (!original.isEmpty() &&
+                original.getPileType().equals(Pile.PileType.TABLEAU) && original.getTopCard().isFaceDown()) {
+            flipTopCard(original);
         }
     }
 
@@ -283,7 +310,6 @@ public class Game extends Pane {
         }
     }
 
-
     public void flipTopTableauCards() {
         for (Pile pile : tableauPiles) {
             if (!pile.isEmpty()) {
@@ -327,4 +353,37 @@ public class Game extends Pane {
 
 
 
+    public class Popup {
+
+        public void display() {
+            Stage popupwindow = new Stage();
+
+            popupwindow.initModality(Modality.APPLICATION_MODAL);
+            popupwindow.setTitle("Congratulations!");
+
+
+            Label label1 = new Label("You won!!!");
+
+
+            Button button1 = new Button("Close this pop up window");
+
+
+            button1.setOnAction(e -> popupwindow.close());
+
+
+            VBox layout = new VBox(10);
+
+
+            layout.getChildren().addAll(label1, button1);
+
+            layout.setAlignment(Pos.CENTER);
+
+            Scene scene1 = new Scene(layout, 300, 250);
+
+            popupwindow.setScene(scene1);
+
+            popupwindow.show();
+
+        }
+    }
 }
