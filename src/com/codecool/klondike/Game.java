@@ -377,8 +377,8 @@ public class Game extends Pane {
         ObservableList<String> options = FXCollections.observableArrayList("Basic Theme", "Hippi Theme", "Pokemon Theme");
         ComboBox comboBox = new ComboBox(options);
         comboBox.setPromptText("Switch Theme");
-        comboBox.setLayoutX(100);
-        comboBox.setLayoutY(600);
+        comboBox.setLayoutX(1330);
+        comboBox.setLayoutY(140);
         comboBox.setId("themeSwitcher");
         getChildren().add(comboBox);
         final int[] newThemeNr = {1};
@@ -408,30 +408,27 @@ public class Game extends Pane {
             popupwindow.initModality(Modality.APPLICATION_MODAL);
             popupwindow.setTitle("Congratulations!");
 
-
             Label label1 = new Label("You won!!!");
 
+            label1.setFont(new Font("Times", 30));
 
-            Button button1 = new Button("Close this pop up window");
+            Button newGameButton = new Button("Close");
 
-
-            button1.setOnAction(
+            newGameButton.setOnAction(
                     e -> {
                         klondike.restart();
                         popupwindow.close();
                     });
 
+            VBox layout = new VBox(50);
 
-            VBox layout = new VBox(10);
-
-
-            layout.getChildren().addAll(label1, button1);
+            layout.getChildren().addAll(label1, newGameButton);
 
             layout.setAlignment(Pos.CENTER);
 
-            Scene scene1 = new Scene(layout, 300, 250);
+            Scene popupScene = new Scene(layout, 250, 200);
 
-            popupwindow.setScene(scene1);
+            popupwindow.setScene(popupScene);
 
             popupwindow.show();
 
