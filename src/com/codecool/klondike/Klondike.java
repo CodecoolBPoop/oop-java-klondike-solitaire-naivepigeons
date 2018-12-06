@@ -16,6 +16,7 @@ public class Klondike extends Application {
     private static final double WINDOW_WIDTH = 1500;
     private static final double WINDOW_HEIGHT = 900;
     private static Stage stage;
+    private static int themeNr = 1;
 
     public static void main(String[] args) {
         launch(args);
@@ -23,14 +24,11 @@ public class Klondike extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        int themeNr = 1;
         Image cardback = Card.getCardBackImage(themeNr);
-        System.out.println(cardback);
         Card.loadCardImages(cardback);
         Game game = new Game();
         game.setTableBackground(new Image("/table/" + themeNr + ".png"));
         game.makeThemeSwitcher();
-
         stage = primaryStage;
         newButtons(game);
         stage.setTitle("Klondike Solitaire");
