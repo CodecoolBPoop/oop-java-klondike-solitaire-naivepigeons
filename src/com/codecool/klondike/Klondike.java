@@ -3,7 +3,9 @@ package com.codecool.klondike;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.control.ComboBox;
 import javafx.scene.image.Image;
+import javafx.scene.layout.HBox;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
@@ -21,14 +23,16 @@ public class Klondike extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        stage = primaryStage;
-
-        Card.loadCardImages();
+        int themeNr = 1;
+        Image cardback = Card.getCardBackImage(themeNr);
+        System.out.println(cardback);
+        Card.loadCardImages(cardback);
         Game game = new Game();
-        game.setTableBackground(new Image("/table/green.png"));
+        game.setTableBackground(new Image("/table/" + themeNr + ".png"));
+        game.makeThemeSwitcher();
 
+        stage = primaryStage;
         newButtons(game);
-
         stage.setTitle("Klondike Solitaire");
         stage.setScene(new Scene(game, WINDOW_WIDTH, WINDOW_HEIGHT));
         stage.show();
