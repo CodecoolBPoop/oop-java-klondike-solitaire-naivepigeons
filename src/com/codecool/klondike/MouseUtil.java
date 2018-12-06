@@ -63,7 +63,7 @@ public class MouseUtil {
                         currentCard.getDropShadow().setOffsetX(0);
                         currentCard.getDropShadow().setOffsetY(0);
                         if (currentIndex == numOfCardsToSlide - 1) {
-                            game.autoFlipTableauTops(currentCard, original);
+                            game.autoFlipTableauTops(original);
                             game.checkAndHandleGameWon();
                         }
                     });

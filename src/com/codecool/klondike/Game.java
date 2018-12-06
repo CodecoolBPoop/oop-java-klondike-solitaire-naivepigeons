@@ -264,14 +264,13 @@ public class Game extends Pane {
             msg = String.format("Placed %s to %s.", card, destPile.getTopCard());
         }
         System.out.println(msg);
-        //autoFlipTableauTops(card);
         MouseUtil.slideToDest(draggedCards, destPile, this);
         draggedCards.clear();
     }
 
 
 
-    public void autoFlipTableauTops(Card card, Pile original) {
+    public void autoFlipTableauTops(Pile original) {
         if (!original.isEmpty() &&
                 original.getPileType().equals(Pile.PileType.TABLEAU) && original.getTopCard().isFaceDown()) {
             flipTopCard(original);
