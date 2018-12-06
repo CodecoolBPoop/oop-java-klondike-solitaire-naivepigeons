@@ -54,6 +54,17 @@ public class Game extends Pane {
         Collections.shuffle(deck);
     }
 
+    public void undoLastMove(){
+        for (Card card: deck) {
+            if (card.isLast){
+                Pile lastPile = card.getLastPile();
+                lastPile.getTopCard().flip();
+                card.moveToPile(lastPile);
+
+            }
+            card.isLast = false;
+        }
+    }
 
     private EventHandler<MouseEvent> onMouseClickedHandler = e -> {
         Card card = (Card) e.getSource();
