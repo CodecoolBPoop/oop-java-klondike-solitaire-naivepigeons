@@ -336,8 +336,8 @@ public class Game extends Pane {
         ObservableList<String> options = FXCollections.observableArrayList("Basic Theme", "Hippi Theme", "Pokemon Theme");
         ComboBox comboBox = new ComboBox(options);
         comboBox.setPromptText("Switch Theme");
-        comboBox.setLayoutX(100);
-        comboBox.setLayoutY(600);
+        comboBox.setLayoutX(1330);
+        comboBox.setLayoutY(140);
         comboBox.setId("themeSwitcher");
         getChildren().add(comboBox);
         final int[] newThemeNr = {1};
