@@ -1,19 +1,16 @@
 package com.codecool.klondike;
 
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 
 import java.util.*;
 
@@ -49,6 +46,7 @@ public class Game extends Pane {
     private static double STOCK_GAP = 1;
     private static double FOUNDATION_GAP = 0;
     private static double TABLEAU_GAP = 30;
+
 
     private void shuffleDeck() {
         Collections.shuffle(deck);
@@ -129,6 +127,7 @@ public class Game extends Pane {
             draggedCards.forEach(MouseUtil::slideBack);
             draggedCards.clear();
         }
+
     };
 
     private boolean areTableauPilesEmpty() {
@@ -240,6 +239,8 @@ public class Game extends Pane {
         draggedCards.clear();
     }
 
+
+
     public void autoFlipTableauTops(Card card, Pile original) {
         if (!original.isEmpty() &&
                 original.getPileType().equals(Pile.PileType.TABLEAU) && original.getTopCard().isFaceDown()) {
@@ -322,6 +323,34 @@ public class Game extends Pane {
                 BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT,
                 BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
     }
+
+
+    public void makeThemeSwitcher() {
+        ObservableList<String> options = FXCollections.observableArrayList("Basic Theme", "Hippi Theme", "Pokemon Theme");
+        ComboBox comboBox = new ComboBox(options);
+        comboBox.setPromptText("Switch Theme");
+        comboBox.setLayoutX(100);
+        comboBox.setLayoutY(600);
+        comboBox.setId("themeSwitcher");
+        getChildren().add(comboBox);
+        final int[] newThemeNr = {1};
+        comboBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
+            @Override
+            public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+                if (newValue.equals("Basic Theme")) {
+                    newThemeNr[0] = 1;
+                } else if (newValue.equals("Hippi Theme")) {
+                    newThemeNr[0] = 2;
+                } if (newValue.equals("Pokemon Theme")) {
+                    newThemeNr[0] = 3;
+                }
+                setTableBackground(new Image("/table/"+ newThemeNr[0] + ".png"));
+            }
+        });
+
+    }
+
+
 
 
     public class Popup {
