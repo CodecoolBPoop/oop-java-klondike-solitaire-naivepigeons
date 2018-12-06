@@ -212,6 +212,7 @@ public class Game extends Pane {
         Pile containingPile = card.getContainingPile();
         Pile.PileType containingType = containingPile.getPileType();
         if (containingType == Pile.PileType.TABLEAU) {
+            // If we are moving only one card, lets check if there is any above it already flipped and if yes, lets not flip anything
             if (draggedCards.size() == 1) {
                 ObservableList<Card> cards = containingPile.getCards();
                 for (int i=cards.size(); i>0; i--) {
@@ -226,6 +227,7 @@ public class Game extends Pane {
                         ;
                     }
                 }
+                // If we move all the cards flipped, lets make sure that the first one above them gets flipped
             } else {
                 int cardsToDig = draggedCards.size() + 1;
                 Card theNewTop = containingPile.getTopXCard(cardsToDig);
