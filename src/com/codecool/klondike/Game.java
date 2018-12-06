@@ -1,15 +1,13 @@
 package com.codecool.klondike;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 
 import java.util.*;
 
@@ -21,6 +19,7 @@ public class Game extends Pane {
     private Pile discardPile;
     private List<Pile> foundationPiles = FXCollections.observableArrayList();
     private List<Pile> tableauPiles = FXCollections.observableArrayList();
+    private ComboBox comboBox;
 
     private double dragStartX, dragStartY;
     private List<Card> draggedCards = FXCollections.observableArrayList();
@@ -28,6 +27,7 @@ public class Game extends Pane {
     private static double STOCK_GAP = 1;
     private static double FOUNDATION_GAP = 0;
     private static double TABLEAU_GAP = 30;
+
 
     private void shuffleDeck() {
         Collections.shuffle(deck);
@@ -294,6 +294,18 @@ public class Game extends Pane {
         setBackground(new Background(new BackgroundImage(tableBackground,
                 BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT,
                 BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
+    }
+
+
+    public void makeThemeSwitcher() {
+        ObservableList<String> options = FXCollections.observableArrayList("Basic Theme", "Hippi Theme", "Pokemon Theme");
+        ComboBox comboBox = new ComboBox();
+        comboBox.getItems().addAll(options);
+        HBox hBox = new HBox(comboBox);
+        hBox.setLayoutX(100);
+        hBox.setLayoutY(100);
+
+
     }
 
 
