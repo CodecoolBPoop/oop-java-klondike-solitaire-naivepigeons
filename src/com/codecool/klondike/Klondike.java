@@ -13,6 +13,7 @@ public class Klondike extends Application {
 
     private static final double WINDOW_WIDTH = 1500;
     private static final double WINDOW_HEIGHT = 900;
+    private static Stage stage;
 
     public static void main(String[] args) {
         launch(args);
@@ -20,15 +21,17 @@ public class Klondike extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        stage = primaryStage;
+
         Card.loadCardImages();
         Game game = new Game();
         game.setTableBackground(new Image("/table/green.png"));
 
-        newButtons(game, primaryStage);
+        newButtons(game, stage);
 
-        primaryStage.setTitle("Klondike Solitaire");
-        primaryStage.setScene(new Scene(game, WINDOW_WIDTH, WINDOW_HEIGHT));
-        primaryStage.show();
+        stage.setTitle("Klondike Solitaire");
+        stage.setScene(new Scene(game, WINDOW_WIDTH, WINDOW_HEIGHT));
+        stage.show();
     }
 
     private void newButtons(Game game, Stage stage) {
@@ -43,14 +46,14 @@ public class Klondike extends Application {
         restartButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                restart(stage);
+                restart();
             }
         });
 
         game.getChildren().add(restartButton);
     }
 
-    private void restart(Stage stage) {
+    public void restart() {
         start(stage);
     }
 
