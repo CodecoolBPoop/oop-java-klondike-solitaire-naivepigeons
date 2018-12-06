@@ -145,6 +145,13 @@ public class Game extends Pane {
             System.out.println("Congratulations, you won!");
             return true;
         }
+        /*
+        for (Pile pile : foundationPiles){
+            if (!pile.isEmpty()){
+                return true;
+            }
+        }
+        */
         return false;
     }
 
