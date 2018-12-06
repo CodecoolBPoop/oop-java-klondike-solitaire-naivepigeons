@@ -30,7 +30,6 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.*;
 
-
 public class Game extends Pane {
 
     private List<Card> deck = new ArrayList<>();
@@ -47,7 +46,6 @@ public class Game extends Pane {
     private static double FOUNDATION_GAP = 0;
     private static double TABLEAU_GAP = 30;
 
-
     private void shuffleDeck() {
         Collections.shuffle(deck);
     }
@@ -55,13 +53,34 @@ public class Game extends Pane {
 
     private EventHandler<MouseEvent> onMouseClickedHandler = e -> {
         Card card = (Card) e.getSource();
-        if (card.getContainingPile().getPileType() == Pile.PileType.STOCK && card.equals(stockPile.getTopCard())) {
+        Pile containingPile = card.getContainingPile();
+        Pile.PileType pileType = containingPile.getPileType();
+
+        if (pileType == Pile.PileType.STOCK && card.equals(stockPile.getTopCard())) {
             card.moveToPile(discardPile);
             card.flip();
             card.setMouseTransparent(false);
             System.out.println("Placed " + card + " to the waste.");
+        } else if (e.getClickCount() > 1) {
+            autoSlide(card);
         }
     };
+
+    private void autoSlide(Card card) {
+        Pile containingPile = card.getContainingPile();
+        Pile.PileType pileType = containingPile.getPileType();
+        if (card.equals(containingPile.getTopCard()) &&
+                (pileType == Pile.PileType.TABLEAU || pileType == Pile.PileType.DISCARD)) {
+            for (Pile foundationPile : foundationPiles) {
+                if (canBePlacedToFoundationPile(card, foundationPile)) {
+                    draggedCards.add(card);
+                    card.toFront();
+                    handleValidMove(card, foundationPile);
+                    break;
+                }
+            }
+        }
+    }
 
     private EventHandler<MouseEvent> stockReverseCardsHandler = e -> {
         refillStockFromDiscard();
@@ -127,7 +146,6 @@ public class Game extends Pane {
             draggedCards.forEach(MouseUtil::slideBack);
             draggedCards.clear();
         }
-
     };
 
     private boolean areTableauPilesEmpty() {
@@ -179,13 +197,7 @@ public class Game extends Pane {
 
     public boolean isMoveValid(Card card, Pile destPile) {
         if (destPile.getPileType().equals(Pile.PileType.FOUNDATION) && draggedCards.size() == 1) {
-            Card topCard = destPile.getTopCard();
-
-            if (topCard == null && card.getRank() == 1) {
-                return true;
-            } else if (topCard == null) {
-                return false;
-            } else if (topCard.getSuit() == card.getSuit() && topCard.getRank() + 1 == card.getRank()) {
+            if (canBePlacedToFoundationPile(card, destPile)) {
                 return true;
             }
         } else if (destPile.getPileType().equals(Pile.PileType.TABLEAU)) {
@@ -201,6 +213,19 @@ public class Game extends Pane {
             else if (Card.isOppositeColor(card, topCard) && topCard.getRank() == (card.getRank() + 1)) {
                 return true;
             }
+        }
+        return false;
+    }
+
+    private Boolean canBePlacedToFoundationPile(Card card, Pile destPile) {
+        Card topCard = destPile.getTopCard();
+
+        if (topCard == null && card.getRank() == 1) {
+            return true;
+        } else if (topCard == null) {
+            return false;
+        } else if (topCard.getSuit() == card.getSuit() && topCard.getRank() + 1 == card.getRank()) {
+            return true;
         }
         return false;
     }
@@ -234,12 +259,9 @@ public class Game extends Pane {
             msg = String.format("Placed %s to %s.", card, destPile.getTopCard());
         }
         System.out.println(msg);
-        //autoFlipTableauTops(card);
         MouseUtil.slideToDest(draggedCards, destPile, this);
         draggedCards.clear();
     }
-
-
 
     public void autoFlipTableauTops(Card card, Pile original) {
         if (!original.isEmpty() &&
@@ -341,16 +363,15 @@ public class Game extends Pane {
                     newThemeNr[0] = 1;
                 } else if (newValue.equals("Hippi Theme")) {
                     newThemeNr[0] = 2;
-                } if (newValue.equals("Pokemon Theme")) {
+                }
+                if (newValue.equals("Pokemon Theme")) {
                     newThemeNr[0] = 3;
                 }
-                setTableBackground(new Image("/table/"+ newThemeNr[0] + ".png"));
+                setTableBackground(new Image("/table/" + newThemeNr[0] + ".png"));
             }
         });
 
     }
-
-
 
 
     public class Popup {
