@@ -34,6 +34,8 @@ public class Game extends Pane {
 
     private List<Card> deck = new ArrayList<>();
 
+    private Klondike klondike;
+
     private Pile stockPile;
     private Pile discardPile;
     private List<Pile> foundationPiles = FXCollections.observableArrayList();
@@ -194,12 +196,14 @@ public class Game extends Pane {
         }
     }
 
-    public Game() {
+    public Game(Klondike klondike) {
         deck = Card.createNewDeck();
         shuffleDeck();
         initPiles();
         dealCards();
         flipTopTableauCards();
+        this.klondike = klondike;
+
     }
 
     public void addMouseEventHandlers(Card card) {
@@ -286,13 +290,12 @@ public class Game extends Pane {
         draggedCards.clear();
     }
 
-    public void autoFlipTableauTops(Card card, Pile original) {
+    public void autoFlipTableauTops(Pile original) {
         if (!original.isEmpty() &&
                 original.getPileType().equals(Pile.PileType.TABLEAU) && original.getTopCard().isFaceDown()) {
             flipTopCard(original);
         }
     }
-
 
     private void initPiles() {
         stockPile = new Pile(Pile.PileType.STOCK, "Stock", STOCK_GAP);
@@ -412,7 +415,11 @@ public class Game extends Pane {
             Button button1 = new Button("Close this pop up window");
 
 
-            button1.setOnAction(e -> popupwindow.close());
+            button1.setOnAction(
+                    e -> {
+                        klondike.restart();
+                        popupwindow.close();
+                    });
 
 
             VBox layout = new VBox(10);
