@@ -336,7 +336,7 @@ public class Game extends Pane {
             Label label1 = new Label("You won!!!");
 
 
-            Button button1 = new Button("Close this pop up window");
+            Button button1 = new Button("Start new game!");
 
 
             button1.setOnAction(e -> popupwindow.close());
@@ -349,9 +349,9 @@ public class Game extends Pane {
 
             layout.setAlignment(Pos.CENTER);
 
-            Scene scene1 = new Scene(layout, 300, 250);
+            Scene popupScene = new Scene(layout, 300, 250);
 
-            popupwindow.setScene(scene1);
+            popupwindow.setScene(popupScene);
 
             popupwindow.show();
 
