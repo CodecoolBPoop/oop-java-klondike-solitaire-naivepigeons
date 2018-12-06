@@ -24,6 +24,7 @@ public class Klondike extends Application {
     public void start(Stage primaryStage) {
         int themeNr = 1;
         Image cardback = Card.getCardBackImage(themeNr);
+        System.out.println(cardback);
         Card.loadCardImages(cardback);
         Game game = new Game();
         game.setTableBackground(new Image("/table/" + themeNr + ".png"));
