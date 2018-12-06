@@ -50,6 +50,28 @@ public class Game extends Pane {
         Collections.shuffle(deck);
     }
 
+    public void undoLastMove(){
+        for (Card card: deck) {
+            if (card.isLast){
+                Pile lastPile = card.getLastPile();
+                if (lastPile != stockPile && lastPile.getTopCard() != null){
+                    lastPile.getTopCard().flip();
+                }
+                else if (lastPile == stockPile){
+                    card.flip();
+                }
+                card.moveToPile(lastPile);
+
+            }
+            card.isLast = false;
+        }
+    }
+
+    public void resetLastMoves(){
+        for (Card card: deck){
+            card.isLast = false;
+        }
+    }
 
     private EventHandler<MouseEvent> onMouseClickedHandler = e -> {
         Card card = (Card) e.getSource();
@@ -191,6 +213,7 @@ public class Game extends Pane {
         for (int i = discardPile.numOfCards() - 1; i >= 0; i--) {
             discardPile.getCards().get(i).flip();
             discardPile.getCards().get(i).moveToPile(stockPile);
+            resetLastMoves();
         }
         System.out.println("Stock refilled from discard pile.");
     }

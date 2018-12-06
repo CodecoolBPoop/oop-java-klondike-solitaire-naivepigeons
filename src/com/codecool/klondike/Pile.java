@@ -73,17 +73,6 @@ public class Pile extends Pane {
             return cards.get(cards.size() - 1);
     }
 
-    public Card getTopXCard(int x) {
-        if (cards.isEmpty())
-            return null;
-        else
-            try {
-                return cards.get(cards.size() - x);
-            } catch (ArrayIndexOutOfBoundsException e) {
-                return null;
-            }
-    }
-
     public int getTopCardIndex() {
         return numOfCards() - 1;
     }
