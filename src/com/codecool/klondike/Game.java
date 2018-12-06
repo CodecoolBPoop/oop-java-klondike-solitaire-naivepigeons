@@ -140,33 +140,19 @@ public class Game extends Pane {
         return true;
     }
 
-    /*
-    public void setGameWonText(Stage stage){
-        Text gameWonText = new Text("Congratulations, you won!!!");
-
-        gameWonText.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
-
-        gameWonText.setX(50);
-        gameWonText.setY(75);
-
-        gameWonText.setUnderline(true);
-
-        Group root = new Group(gameWonText);
-
-        Scene scene = new Scene(root, 600, 300);
-
-        stage.setTitle("Game won");
-
-        stage.setScene(scene);
-    }
-    */
-
     public boolean isGameWon() {
         if (stockPile.isEmpty() && discardPile.isEmpty() && areTableauPilesEmpty()) {
             System.out.println("Congratulations, you won!");
             return true;
         }
         return false;
+    }
+
+    public void checkAndHandleGameWon(){
+        if (isGameWon()){
+            Popup popup = new Popup();
+            popup.display();
+        }
     }
 
     public Game() {
@@ -185,7 +171,7 @@ public class Game extends Pane {
     }
 
     public void refillStockFromDiscard() {
-        for (int i = discardPile.numOfCards() - 1; i >= 0 ; i--) {
+        for (int i = discardPile.numOfCards() - 1; i >= 0; i--) {
             discardPile.getCards().get(i).flip();
             discardPile.getCards().get(i).moveToPile(stockPile);
         }
@@ -219,6 +205,7 @@ public class Game extends Pane {
         }
         return false;
     }
+
     private Pile getValidIntersectingPile(Card card, List<Pile> piles) {
         Pile result = null;
         for (Pile pile : piles) {
@@ -248,12 +235,12 @@ public class Game extends Pane {
             msg = String.format("Placed %s to %s.", card, destPile.getTopCard());
         }
         System.out.println(msg);
-        autoFlipTableauTops(card);
-        MouseUtil.slideToDest(draggedCards, destPile);
+        //autoFlipTableauTops(card);
+        MouseUtil.slideToDest(draggedCards, destPile, this);
         draggedCards.clear();
     }
 
-    private void autoFlipTableauTops (Card card) {
+    private void autoFlipTableauTops(Card card) {
         Pile containingPile = card.getContainingPile();
         Pile.PileType containingType = containingPile.getPileType();
         if (containingType == Pile.PileType.TABLEAU) {
@@ -373,7 +360,7 @@ public class Game extends Pane {
 
             popupwindow.setScene(scene1);
 
-            popupwindow.showAndWait();
+            popupwindow.show();
 
         }
     }

@@ -31,12 +31,13 @@ public class MouseUtil {
                 });
     }
 
-    public static void slideToDest(List<Card> cardsToSlide, Pile destPile) {
+    public static void slideToDest(List<Card> cardsToSlide, Pile destPile, Game game) {
         if (cardsToSlide == null)
             return;
         double destCardGap = destPile.getCardGap();
         double targetX;
         double targetY;
+        int numOfCardsToSlide = cardsToSlide.size();
 
         if (destPile.isEmpty()) {
             targetX = destPile.getLayoutX();
@@ -46,10 +47,12 @@ public class MouseUtil {
             targetY = destPile.getTopCard().getLayoutY();
         }
 
+        Pile original = cardsToSlide.get(0).getContainingPile();
         for (int i = 0; i < cardsToSlide.size(); i++) {
             Card currentCard = cardsToSlide.get(i);
             double sourceX = currentCard.getLayoutX() + currentCard.getTranslateX();
             double sourceY = currentCard.getLayoutY() + currentCard.getTranslateY();
+            int currentIndex = i;
 
             animateCardMovement(currentCard, sourceX, sourceY, targetX,
                     targetY + ((destPile.isEmpty() ? i : i + 1) * destCardGap), Duration.millis(150),
@@ -58,6 +61,13 @@ public class MouseUtil {
                         currentCard.getDropShadow().setRadius(2);
                         currentCard.getDropShadow().setOffsetX(0);
                         currentCard.getDropShadow().setOffsetY(0);
+                        if (currentIndex == numOfCardsToSlide - 1 && !original.isEmpty() &&
+                                original.getPileType().equals(Pile.PileType.TABLEAU) && original.getTopCard().isFaceDown()) {
+                            game.flipTopCard(original);
+                        }
+                        if (currentIndex == numOfCardsToSlide-1){
+                            game.checkAndHandleGameWon();
+                        }
                     });
         }
     }
