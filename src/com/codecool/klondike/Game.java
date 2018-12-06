@@ -332,24 +332,21 @@ public class Game extends Pane {
             popupwindow.initModality(Modality.APPLICATION_MODAL);
             popupwindow.setTitle("Congratulations!");
 
-
             Label label1 = new Label("You won!!!");
 
+            label1.setFont(new Font("Times", 30));
 
-            Button button1 = new Button("Start new game!");
+            Button newGameButton = new Button("Close");
 
+            newGameButton.setOnAction(e -> popupwindow.close());
 
-            button1.setOnAction(e -> popupwindow.close());
+            VBox layout = new VBox(50);
 
-
-            VBox layout = new VBox(10);
-
-
-            layout.getChildren().addAll(label1, button1);
+            layout.getChildren().addAll(label1, newGameButton);
 
             layout.setAlignment(Pos.CENTER);
 
-            Scene popupScene = new Scene(layout, 300, 250);
+            Scene popupScene = new Scene(layout, 250, 200);
 
             popupwindow.setScene(popupScene);
 

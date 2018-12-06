@@ -13,7 +13,7 @@ public class Klondike extends Application {
 
     private static final double WINDOW_WIDTH = 1500;
     private static final double WINDOW_HEIGHT = 900;
-    private static Stage stage;
+    public static Stage stage;
 
     public static void main(String[] args) {
         launch(args);
