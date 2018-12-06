@@ -1,7 +1,10 @@
 package com.codecool.klondike;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -19,7 +22,6 @@ public class Game extends Pane {
     private Pile discardPile;
     private List<Pile> foundationPiles = FXCollections.observableArrayList();
     private List<Pile> tableauPiles = FXCollections.observableArrayList();
-    private ComboBox comboBox;
 
     private double dragStartX, dragStartY;
     private List<Card> draggedCards = FXCollections.observableArrayList();
@@ -299,14 +301,30 @@ public class Game extends Pane {
 
     public void makeThemeSwitcher() {
         ObservableList<String> options = FXCollections.observableArrayList("Basic Theme", "Hippi Theme", "Pokemon Theme");
-        ComboBox comboBox = new ComboBox();
-        comboBox.getItems().addAll(options);
-        HBox hBox = new HBox(comboBox);
-        hBox.setLayoutX(100);
-        hBox.setLayoutY(100);
-
+        ComboBox comboBox = new ComboBox(options);
+        comboBox.setPromptText("Switch Theme");
+        comboBox.setLayoutX(100);
+        comboBox.setLayoutY(600);
+        comboBox.setId("themeSwitcher");
+        getChildren().add(comboBox);
+        final int[] newThemeNr = {1};
+        comboBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
+            @Override
+            public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+                if (newValue.equals("Basic Theme")) {
+                    newThemeNr[0] = 1;
+                } else if (newValue.equals("Hippi Theme")) {
+                    newThemeNr[0] = 2;
+                } if (newValue.equals("Pokemon Theme")) {
+                    newThemeNr[0] = 3;
+                }
+                setTableBackground(new Image("/table/"+ newThemeNr[0] + ".png"));
+            }
+        });
 
     }
+
+
 
 
 }

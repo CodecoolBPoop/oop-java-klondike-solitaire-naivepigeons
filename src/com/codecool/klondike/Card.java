@@ -121,8 +121,8 @@ public class Card extends ImageView {
         return result;
     }
 
-    public static void loadCardImages(int theme) {
-        cardBackImage = getCardBackImage(theme);
+    public static void loadCardImages(Image theCardBack) {
+        cardBackImage = theCardBack;
         String suitName;
         for (Suits suit: Suits.values()) {
             suitName = suit.toString().toLowerCase();
