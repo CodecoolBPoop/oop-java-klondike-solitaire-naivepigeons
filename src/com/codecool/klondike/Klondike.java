@@ -40,8 +40,8 @@ public class Klondike extends Application {
 
         Button restartButton = new Button("");
         restartButton.setGraphic(new ImageView(restartImage));
-        restartButton.setLayoutX(10);
-        restartButton.setLayoutY(10);
+        restartButton.setLayoutX(1375);
+        restartButton.setLayoutY(50);
 
         restartButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
