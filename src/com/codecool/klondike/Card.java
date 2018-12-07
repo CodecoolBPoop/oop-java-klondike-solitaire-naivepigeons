@@ -145,6 +145,10 @@ public class Card extends ImageView {
         }
     }
 
+    public void setBackFace(Image backImage) {
+        backFace = backImage;
+    }
+
     public enum Ranks {
         ACE,
         TWO,

@@ -73,5 +73,9 @@ public class Klondike extends Application {
         start(stage);
     }
 
+    public void setTheme(int themeNr) {
+        this.themeNr = themeNr;
+    }
+
 }
 

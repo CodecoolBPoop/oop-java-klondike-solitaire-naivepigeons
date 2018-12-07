@@ -393,7 +393,8 @@ public class Game extends Pane {
                 if (newValue.equals("Pokemon Theme")) {
                     newThemeNr[0] = 3;
                 }
-                setTableBackground(new Image("/table/" + newThemeNr[0] + ".png"));
+                klondike.setTheme(newThemeNr[0]);
+                klondike.restart();
             }
         });
 
